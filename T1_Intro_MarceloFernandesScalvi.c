@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <string.h>>
 #include <stdlib.h>
 
 //Métodos para Conferência
@@ -72,10 +73,23 @@ void TabelaBinario(char numChar, char *binStr) {
     }
 }
 
+void TabelaBinarioOcta(char numChar, char *binStr) {
+    switch (numChar) {
+        case '0': strcpy(binStr, "000"); break;
+        case '1': strcpy(binStr, "001"); break;
+        case '2': strcpy(binStr, "010"); break;
+        case '3': strcpy(binStr, "011"); break;
+        case '4': strcpy(binStr, "100"); break;
+        case '5': strcpy(binStr, "101"); break;
+        case '6': strcpy(binStr, "110"); break;
+        case '7': strcpy(binStr, "111"); break;
+    }
+}
+
 //Métodos para 1a Conversão
 //hexa pra bi
 char* ConverterHxB(const char* hexStr) {
-    static char binStr[1024];
+    static char binStr[500];
     char tempBin[5];
     binStr[0] = '\0'; 
 
@@ -89,7 +103,7 @@ char* ConverterHxB(const char* hexStr) {
 
 //deci pra bi
 char* ConverterDxB(const char* decStr) {
-    static char binStr[1024];
+    static char binStr[500];
     char tempBin[5];
     binStr[0] = '\0'; 
 
@@ -103,13 +117,12 @@ char* ConverterDxB(const char* decStr) {
 
 //octa pra bi
 char* ConverterOxB(const char* octStr) {
-    static char binStr[1024];
-    char tempBin[5];
+    static char binStr[500];
+    char tempBin[4];
     binStr[0] = '\0'; 
 
     for (int i = 0; i < strlen(octStr); i++) {
-        TabelaBinario(octStr[i], tempBin);
-        //Dropar o primeiro 0
+        TabelaBinarioOcta(octStr[i], tempBin);
         strcat(binStr, tempBin); 
     }
 
@@ -118,8 +131,36 @@ char* ConverterOxB(const char* octStr) {
 
 //Métodos para 2a Conversão
 //bi pra hexa
+char* ConverterBxH(const char* binStr){
+    static char hexStr[500];
+
+
+
+    return binStr;
+}
+
 //bi pra deci
+char* ConverterBxD(const char* binStr){
+    int decVal = 0;
+    int length = strlen(binStr);
+    char decStr[500];
+
+    for (int i = 0; i < length; i++) {
+        if (binStr[length - 1 - i] == '1') {
+            decVal += pow(2, i);
+        }
+    }
+    printf("\n%d\n", decVal);
+    sprintf(decStr, "%d", decVal);
+    printf("\n%s\n", decStr);
+
+    return decStr;
+}
+
 //bi pra octa
+char* ConverterBxO(const char* binStr){
+    
+}
 
 int main () {
 
@@ -138,7 +179,7 @@ int main () {
         do {
             InInvalida = 0;
 
-            printf ("Em qual base está seu número?\n1-Binário, 2-Octal, 3-Decimal, 4- Hexadecimal\n");
+            printf ("Em qual base esta seu numero?\n1-Binario, 2-Octal, 3-Decimal, 4-Hexadecimal\n");
             scanf ("%d", &baseI);
             while ((getchar()) != '\n');
 
@@ -162,7 +203,7 @@ int main () {
         do {
             InInvalida = 0;
                 
-            printf ("Para qual base quer convertê-lo?\n1-Binário, 2-Octal, 3-Decimal, 4- Hexadecimal\n");
+            printf ("Para qual base quer converte-lo?\n1-Binario, 2-Octal, 3-Decimal, 4-Hexadecimal\n");
             scanf ("%d", &baseF);
             while ((getchar()) != '\n');
 
@@ -186,8 +227,9 @@ int main () {
         do {
             InInvalida = 0;
 
-            printf ("Entre com o número.\n");
+            printf ("Entre com o numero.\n");
             fgets (numeroInicial, sizeof(numeroInicial), stdin);
+            strtok(numeroInicial, "\n"); 
 
             if (baseI == 1){
                 InInvalida = confereBin(numeroInicial);
@@ -224,6 +266,8 @@ int main () {
             default:
                 break;
             }
+        } else {
+                strcpy(numeroBinario, numeroInicial);
         }
 
         //Segunda Conversão
@@ -245,13 +289,15 @@ int main () {
             default:
                 break;
             }
+        } else {
+                strcpy(numeroFinal, numeroBinario);
         }
 
         //Saída
-        printf ("O numero %s, convertido da base %s para a ase %s, fica %s.\n\n", numeroInicial, baseEntrada, baseSaida, numeroFinal);
+        printf ("O numero %s, convertido da base %s para a base %s, fica %s.\n\n", numeroInicial, baseEntrada, baseSaida, numeroFinal);
 
         //recursão
-        printf ("\nDigite 1 para entrar com outro número, 0 para sair.\n");
+        printf ("\nDigite 1 para entrar com outro numero, 0 para sair.\n");
         scanf("%d", &i);
         while ((getchar()) != '\n');
 
