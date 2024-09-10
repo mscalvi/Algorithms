@@ -16,7 +16,7 @@ int main (){
         aux = vetor[i];
         vetor[i] = vetor[19-i];
         vetor[19-i] = aux;
-    } //Inerte o vetor
+    } //Inverte o vetor
 
     for (int i = 0; i < 20; i++)
     {
