@@ -1,3 +1,29 @@
+/*
+
+Arquivos_Trabalho.c
+
+Esse programa faz o registro de cartas de MTG em um arquivo binário, dando opção de consulta e manipulação desses registros, podendo excluí-los logicamente ou fisicamente.
+
+Funcionalidades
+-Cadastrar Carta: Adiciona uma nova carta à coleção, permitindo que o usuário forneça dados como nome, custo de mana, tipo, subtipo e supertipo.
+-Consultar Carta: Permite a busca de uma carta na coleção por ID ou nome.
+-Desativar Carta: Remove uma carta da coleção, marcando-a como desativada.
+-Excluir Carta: Exclui permanentemente uma carta da coleção.
+-Ajuda Criptografada: Exibe e criptografa um arquivo de ajuda para o usuário.
+-Menu Interativo: Interface de texto simples que facilita a navegação entre as opções.
+
+Fluxo do Programa
+-O programa começa verificando a existência do arquivo de ajuda (help.txt). Se não existir, cria e criptografa o arquivo.
+-Abre ou cria o arquivo binário que armazena as cartas (colecao.dat).
+-Exibe o menu principal, onde o usuário pode escolher entre cadastrar, consultar, desativar ou excluir cartas, ou ainda acessar a ajuda.
+-No menu principal, o usuário pode pressionar F1 para visualizar a ajuda criptografada.
+
+----------------------
+
+Marcelo Fernandes Scalvi
+
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -55,20 +81,24 @@ void cadastrarCarta(FILE *arquivo) {
 void consultarCarta(FILE *arquivo) {
     CartaModel carta;
     char opcao;
-    int id;
+    int id, cont;
     char nome[MAX_NOME_LEN];
     
     printf("\n1- Procurar por ID\n2- Procurar por Nome\n");
     opcao = getch();
     
     rewind(arquivo); 
+    cont = 1;
 
+    while (cont == 1) {
     if (opcao == '1') {
         printf("Digite o ID: ");
         scanf("%d", &id);
         while (fread(&carta, sizeof(CartaModel), 1, arquivo)) {
             if (carta.colecao && carta.id == id) {
                 printf("\nCarta encontrada: %s, um %s, de custo %s\n", carta.nome, carta.tipo, carta.cmc);
+                printf ("Aperte 0 para voltar ao menu.");
+                scanf("%d", &cont);
                 return;
             }
         }
@@ -78,9 +108,12 @@ void consultarCarta(FILE *arquivo) {
         while (fread(&carta, sizeof(CartaModel), 1, arquivo)) {
             if (carta.colecao && strcmp(carta.nome, nome) == 0) {
                 printf("\nCarta encontrada: %s, um %s, de custo %s\n", carta.nome, carta.tipo, carta.cmc);
+                printf ("Aperte 0 para voltar ao menu.");
+                scanf("%d", &cont);
                 return;
             }
         }
+    }
     }
     
     printf("Carta nao esta na colecao!\n");
@@ -93,7 +126,7 @@ void desligarCarta(FILE *arquivo) {
     printf("Digite o ID da carta a ser removida da colecao: ");
     scanf("%d", &id);
     
-    rewind(arquivo); // Volta ao início do arquivo
+    rewind(arquivo);
     while (fread(&carta, sizeof(CartaModel), 1, arquivo)) {
         if (carta.id == id && carta.colecao == 1) {
             carta.colecao = 0;
@@ -197,6 +230,8 @@ void menu(FILE *arquivo) {
     int tecla;
 
     do {
+        system("cls");
+
         printf("\n---- MENU ----\n");
         printf("1. Cadastrar Carta\n");
         printf("2. Consultar Carta\n");
@@ -206,9 +241,9 @@ void menu(FILE *arquivo) {
         printf("F1. Ajuda\n");
         tecla = getch();
 
-        if (tecla == 0 || tecla == 224) {  // Teclas especiais (F1, setas, etc.)
-            tecla = getch();  // Captura a segunda parte da tecla especial
-            if (tecla == 59) {  // Código para F1 (59 é o código para F1 nas teclas especiais)
+        if (tecla == 0 || tecla == 224) {  
+            tecla = getch();  
+            if (tecla == 59) { 
                 mostrarAjuda();
             }
         } else {
