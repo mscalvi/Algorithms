@@ -1,6 +1,6 @@
 /*
 
-Arquivos_Trabalho.c
+Arquivos_Trabalho2.c
 
 Esse programa faz o registro de cartas de MTG em um arquivo binário, dando opção de consulta e manipulação desses registros, podendo excluí-los logicamente ou fisicamente.
 
